@@ -1,80 +1,127 @@
 ## ------------------------------------------------------------------------
 
-ncircles <- 200
-limits <- c(-50, 50)
-inset <- diff(limits) / 3
-rmax <- 20
+set.seed(42)
 
-xyr <- data.frame(
-  x = runif(ncircles, min(limits) + inset, max(limits) - inset),
-  y = runif(ncircles, min(limits) + inset, max(limits) - inset),
-  r = rbeta(ncircles, 1, 10) * rmax)
+ncircles <- 200
+limits <- c(-40, 40)
+inset <- diff(limits) / 3
+maxarea <- 40
+
+areas <- rbeta(ncircles, 1, 5) * maxarea
+
 
 ## ------------------------------------------------------------------------
 library(packcircles)
 
-res <- circleLayout(xyr, limits, limits, maxiter = 1000)
+res <- circleRepelLayout(areas, xlim = limits, ylim = limits)
+
 cat(res$niter, "iterations performed")
+
+
+## ------------------------------------------------------------------------
+
+head( res$layout )
+
+
+## ------------------------------------------------------------------------
+
+dat.gg <- circleLayoutVertices(res$layout, sizetype = "radius")
+
+head(dat.gg)
+
 
 ## ---- fig.width=7, fig.height=4------------------------------------------
 library(ggplot2)
-library(gridExtra)
 
-## plot data for the `before` layout
-dat.before <- circlePlotData(xyr)
-
-## plot dta for the `after` layout returned by circleLayout
-dat.after <- circlePlotData(res$layout)
-
-doPlot <- function(dat, title)
-  ggplot(dat) + 
-  geom_polygon(aes(x, y, group=id), colour="brown", fill="burlywood", alpha=0.3) +
-  coord_equal(xlim=limits, ylim=limits) +
-  theme_bw() +
-  theme(axis.text=element_blank(),
+t <- theme_bw() +
+  theme(panel.grid = element_blank(),
+        axis.text=element_blank(),
         axis.ticks=element_blank(),
-        axis.title=element_blank()) +
-  labs(title=title)
+        axis.title=element_blank())
 
-grid.arrange(
-  doPlot(dat.before, "before"),
-  doPlot(dat.after, "after"),
-  nrow=1)
+theme_set(t)
+
+ggplot(data = dat.gg, aes(x, y, group = id)) +
+  geom_polygon(colour="brown", fill="burlywood", alpha=0.3) +
+  coord_equal(xlim=limits, ylim=limits)
+
+
+## ------------------------------------------------------------------------
+
+dat.init <- data.frame(
+  x = runif(ncircles, limits[1], limits[2]),
+  y = runif(ncircles, limits[1], limits[2]) / 4.0,
+  area = areas
+)
+
+res <- circleRepelLayout(dat.init, xlim = limits, ylim = limits, 
+                         xysizecols = 1:3)
+
+cat(res$niter, "iterations performed")
+
 
 ## ---- fig.width=7, fig.height=4------------------------------------------
-largest.id <- which(xyr$r == max(xyr$r))
 
-# add a column to the previously generated plot data for the 'before' circles
-dat.before$state <- ifelse(dat.before$id == largest.id, "static", "free")
+# Get vertex data for the initial layout where sizes are areas
+dat.gg.initial <- circleLayoutVertices(dat.init, sizetype = "area")
 
-# tweak the plot function to colour circles based on the state column
-doPlot <- function(dat, title)
-  ggplot(dat) + 
-  geom_polygon(aes(x, y, group=id, fill=state), colour="brown1") +
-  scale_fill_manual(values=c("NA", "brown4")) +
+# Get vertex data for the layout returned by the function where
+# sizes are radii
+dat.gg.final <- circleLayoutVertices(res$layout)
+
+dat.gg <- rbind(
+  cbind(dat.gg.initial, set=1),
+  cbind(dat.gg.final, set=2)
+)
+
+ggplot(data = dat.gg, aes(x, y, group = id)) +
+  geom_polygon(colour="brown", fill="burlywood", alpha=0.3) +
+  
   coord_equal(xlim=limits, ylim=limits) +
-  theme_bw() +
-  theme(axis.text=element_blank(),
-        axis.ticks=element_blank(),
-        axis.title=element_blank(),
-        legend.position="none") +
-  labs(title=title)
+  
+  facet_wrap(~ set,
+             labeller = as_labeller(c(`1` = "Initial layout",
+                                      `2` = "Final layout")))
 
-g.before <- doPlot(dat.before, "before")
+
+## ---- fig.width=7, fig.height=4------------------------------------------
+
+# choose several arbitrary circles and make them the larger 
+# than the others
+largest.ids <- sample(1:ncircles, 10)
+dat.init$area[largest.ids] <- 2 * maxarea
+
+# re-generate the vertex data for the initial circles, adding a column
+# to indicate if a circle is fixed (the largest) or free
+dat.gg.initial <- circleLayoutVertices(dat.init, sizetype = "area")
+
+dat.gg.initial$state <- ifelse(dat.gg.initial$id %in% largest.ids, "fixed", "free")
 
 # now re-run the layout algorithm with a weights vector to fix the position
 # of the largest circle
-wts <- rep(1.0, nrow(xyr))
-wts[ largest.id ] <- 0.0
+wts <- rep(1.0, nrow(dat.init))
+wts[ largest.ids ] <- 0.0
 
-res <- circleLayout(xyr, limits, limits, maxiter = 1000, weights=wts)
+res <- circleRepelLayout(dat.init, xlim = limits, ylim = limits, weights=wts)
 
-# finally generate a new plot for the 'after' circles
-dat.after <- circlePlotData(res$layout)
-dat.after$state <- ifelse(dat.after$id == largest.id, "static", "free")
+dat.gg.final <- circleLayoutVertices(res$layout)
+dat.gg.final$state <- ifelse(dat.gg.final$id %in% largest.ids, "fixed", "free")
 
-g.after <- doPlot(dat.after, "after")
+dat.gg <- rbind(
+  cbind(dat.gg.initial, set = 1),
+  cbind(dat.gg.final, set = 2)
+)
 
-grid.arrange(g.before, g.after, nrow=1)
+ggplot(data = dat.gg, aes(x, y, group=id, fill=state)) + 
+  
+  geom_polygon(colour="brown1", show.legend = FALSE) +
+  
+  scale_fill_manual(breaks = c("fixed", "free"), values=c("brown4", NA)) +
+  
+  coord_equal(xlim=limits, ylim=limits) +
+  
+  facet_wrap(~ set,
+             labeller = as_labeller(c(`1` = "Initial layout",
+                                      `2` = "Final layout")))
 
 

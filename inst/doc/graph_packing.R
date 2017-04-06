@@ -24,13 +24,17 @@
 #  layout <- circleGraphLayout(internal, external)
 #  
 #  ## Get data for circle vertices.
-#  plotdat <- circlePlotData(layout, xyr.cols = 2:4, id.col = 1)
+#  plotdat <- circleLayoutVertices(layout, xysizecols = 2:4, idcol = 1)
 #  
 #  ## Draw circles annotated with their IDs.
 #  ggplot() +
-#    geom_polygon(data=plotdat, aes(x, y, group=id), fill=NA, colour="black") +
+#    geom_polygon(data=plotdat, aes(x, y, group=id),
+#                 fill=NA, colour="black") +
+#  
 #    geom_text(data=layout, aes(x, y, label=id)) +
+#  
 #    coord_equal() +
+#  
 #    theme_bw()
 #  
 
