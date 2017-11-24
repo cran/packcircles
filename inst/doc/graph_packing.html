@@ -12,7 +12,7 @@
 
 <meta name="author" content="Michael Bedward" />
 
-<meta name="date" content="2017-04-06" />
+<meta name="date" content="2017-11-24" />
 
 <title>Graph-based circle packing</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Graph-based circle packing</h1>
 <h4 class="author"><em>Michael Bedward</em></h4>
-<h4 class="date"><em>2017-04-06</em></h4>
+<h4 class="date"><em>2017-11-24</em></h4>
 
 
 
@@ -105,16 +105,16 @@ external &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 layout &lt;-<span class="st"> </span><span class="kw">circleGraphLayout</span>(internal, external)
 
 ## Get data for circle vertices.
-plotdat &lt;-<span class="st"> </span><span class="kw">circleLayoutVertices</span>(layout, <span class="dt">xysizecols =</span> <span class="dv">2</span>:<span class="dv">4</span>, <span class="dt">idcol =</span> <span class="dv">1</span>)
+plotdat &lt;-<span class="st"> </span><span class="kw">circleLayoutVertices</span>(layout, <span class="dt">xysizecols =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">idcol =</span> <span class="dv">1</span>)
 
 ## Draw circles annotated with their IDs.
-<span class="kw">ggplot</span>() +
+<span class="kw">ggplot</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span>plotdat, <span class="kw">aes</span>(x, y, <span class="dt">group=</span>id), 
-               <span class="dt">fill=</span><span class="ot">NA</span>, <span class="dt">colour=</span><span class="st">&quot;black&quot;</span>) +
+               <span class="dt">fill=</span><span class="ot">NA</span>, <span class="dt">colour=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span>
 <span class="st">  </span>
-<span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">data=</span>layout, <span class="kw">aes</span>(x, y, <span class="dt">label=</span>id)) +
+<span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">data=</span>layout, <span class="kw">aes</span>(x, y, <span class="dt">label=</span>id)) <span class="op">+</span>
 <span class="st">  </span>
-<span class="st">  </span><span class="kw">coord_equal</span>() +
+<span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span>
 <span class="st">  </span>
 <span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
 
@@ -125,7 +125,7 @@ plotdat &lt;-<span class="st"> </span><span class="kw">circleLayoutVertices</spa
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

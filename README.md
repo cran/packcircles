@@ -5,7 +5,7 @@ R package for circle packing.
 
 This package provides functions to find non-overlapping arrangements of circles.
 
-The function `circleLayout` attempts to arrange a set of circles of specified
+The function `circleRepelLayout` attempts to arrange a set of circles of specified
 radii within a rectangle such that there is no-overlap between circles. 
 The algorithm is adapted from an example written in Processing by Sean
 McCullough (which no longer seems to be available online). It involves
@@ -29,6 +29,13 @@ hierarchical data by circle packing* by Weixin Wang, Hui Wang, Guozhong Dai, and
 Hongan Wang. Published in *Proceedings of the SIGCHI Conference on Human Factors
 in Computing Systems*, 2006, pp. 517-520.
 [ACM](https://dl.acm.org/citation.cfm?id=1124851).
+
+
+The function `circleRemoveOverlaps` takes an initial set of overlapping circles
+and attempts to find a non-overlapping subset or, optionally, a subset with some
+specified degree of overlap. Circle positions remain fixed. It provides several
+fast heuristic algorithms to choose from, as well as two based on linear 
+programming. For the latter, package lpSolve must be installed.
 
 
 The function `circleGraphLayout` is an initial Rcpp port of an algorithm described by
