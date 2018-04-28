@@ -1,9 +1,9 @@
 Package: packcircles
 Type: Package
-Version: 0.3.1
+Version: 0.3.2
 Title: Circle Packing
 Description: Simple algorithms for circle packing.
-Date: 2018-01-09
+Date: 2018-04-28
 Authors@R: c(
   person("Michael", "Bedward", role = c("aut", "cre"), email = "michael.bedward@gmail.com"),
   person("David", "Eppstein", role = "aut", email = "david.eppstein@gmail.com", 
@@ -22,7 +22,7 @@ LazyData: true
 License: MIT + file LICENSE
 RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2018-01-09 05:01:47 UTC; mbedward
+Packaged: 2018-04-28 00:42:50 UTC; mbedward
 Author: Michael Bedward [aut, cre],
   David Eppstein [aut] (Author of Python code for graph-based circle
     packing ported to C++ for this package),
@@ -30,4 +30,4 @@ Author: Michael Bedward [aut, cre],
     ported to C++ for this package)
 Maintainer: Michael Bedward <michael.bedward@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-01-09 05:11:53 UTC
+Date/Publication: 2018-04-28 06:04:56 UTC
