@@ -1,8 +1,28 @@
-## ----setup, include=FALSE------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------
 
 set.seed(42)
 
 library(packcircles) 
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  # Cannot run graph code without ggplot2 so turn off chunk evaluation
+  warning("Package ggplot2 is required for this vignette")
+  knitr::opts_chunk$set(eval = FALSE)
+}
+
+
+## -----------------------------------------------------------------------------
+
+areas <- c(20, 10, 40, rep(5, 7))
+
+# Generate the layout 
+packing <- circleProgressiveLayout(areas) 
+
+head( round(packing, 2) )
+
+
+## ----fig.width=4, fig.height=4------------------------------------------------
+
 library(ggplot2)
 
 t <- theme_bw() + 
@@ -14,29 +34,18 @@ t <- theme_bw() +
 theme_set(t)
 
 
-## ------------------------------------------------------------------------
-
-areas <- c(20, 10, 40, rep(5, 7))
-
-# Generate the layout 
-packing <- circleProgressiveLayout(areas) 
-
-head( round(packing, 2) )
-
-
-## ----fig.width=4, fig.height=4-------------------------------------------
-
 dat.gg <- circleLayoutVertices(packing, npoints=50)
 
-ggplot(data = dat.gg) + geom_polygon(aes(x, y, group = id), colour = "black", 
-fill = "grey90", alpha = 0.7, show.legend = FALSE) +
+ggplot(data = dat.gg) + 
+  geom_polygon(aes(x, y, group = id), colour = "black", 
+               fill = "grey90", alpha = 0.7, show.legend = FALSE) +
 
-geom_text(data = packing, aes(x, y), label = 1:nrow(packing)) +
+  geom_text(data = packing, aes(x, y), label = 1:nrow(packing)) +
 
-coord_equal()
+  coord_equal()
 
 
-## ----fig.width=7, fig.height=5-------------------------------------------
+## ----fig.width=7, fig.height=5------------------------------------------------
 
 ncircles <- length(areas) 
 nreps <- 6
@@ -65,7 +74,7 @@ ggplot(data = dat.gg, aes(x, y)) +
   facet_wrap(~ rep, nrow = 2)
 
 
-## ----fig.width=7, fig.height=4-------------------------------------------
+## ----fig.width=7, fig.height=4------------------------------------------------
 
 areas <- 1:1000
 
@@ -96,13 +105,13 @@ ggplot(data = dat, aes(x, y)) +
              )
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 data("bacteria")
 head(bacteria)
 
 
-## ----fig.width=5, fig.height=5, fig.align='center'-----------------------
+## ----fig.width=5, fig.height=5, fig.align='center'----------------------------
 
 packing <- circleProgressiveLayout(bacteria)
 
@@ -120,26 +129,27 @@ ggplot(data = dat.gg) +
   coord_equal()
 
 
-## ----fig.width=5, fig.height=5-------------------------------------------
+## ----fig.width=5, fig.height=5------------------------------------------------
 
-library(ggiraph)
-
-gg <- ggplot(data = dat.gg) +
+if (requireNamespace("ggiraph")) {
   
-  geom_polygon_interactive(
-    aes(x, y, group = id, fill = factor(id),
-        tooltip = bacteria$label[id], data_id = id), 
-    colour = "black",
-    show.legend = FALSE) +
+  gg <- ggplot(data = dat.gg) +
+    ggiraph::geom_polygon_interactive(
+      aes(x, y, group = id, fill = factor(id),
+          tooltip = bacteria$label[id], data_id = id), 
+      colour = "black",
+      show.legend = FALSE) +
+    
+    scale_fill_manual(values = bacteria$colour) +
+    
+    scale_y_reverse() +
+    
+    labs(title = "Hover over circle to display taxon name") +
+    
+    coord_equal()
   
-  scale_fill_manual(values = bacteria$colour) +
+  ggiraph::ggiraph(ggobj = gg, width_svg = 5, height_svg = 5)
   
-  scale_y_reverse() +
-  
-  labs(title = "Hover over circle to display taxon name") +
-
-  coord_equal()
-
-ggiraph(ggobj = gg, width_svg = 5, height_svg = 5)
+}
 
 

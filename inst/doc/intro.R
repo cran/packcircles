@@ -1,4 +1,13 @@
-## ------------------------------------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  # Cannot run graph code without ggplot2 so turn off chunk evaluation
+  warning("Package ggplot2 is required for this vignette")
+  knitr::opts_chunk$set(eval = FALSE)
+}
+
+
+## -----------------------------------------------------------------------------
 
 set.seed(42)
 
@@ -10,7 +19,8 @@ maxarea <- 40
 areas <- rbeta(ncircles, 1, 5) * maxarea
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
+
 library(packcircles)
 
 res <- circleRepelLayout(areas, xlim = limits, ylim = limits)
@@ -18,19 +28,20 @@ res <- circleRepelLayout(areas, xlim = limits, ylim = limits)
 cat(res$niter, "iterations performed")
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 head( res$layout )
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 dat.gg <- circleLayoutVertices(res$layout, sizetype = "radius")
 
 head(dat.gg)
 
 
-## ---- fig.width=7, fig.height=4------------------------------------------
+## ---- fig.width=7, fig.height=4-----------------------------------------------
+
 library(ggplot2)
 
 t <- theme_bw() +
@@ -46,7 +57,7 @@ ggplot(data = dat.gg, aes(x, y, group = id)) +
   coord_equal(xlim=limits, ylim=limits)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 dat.init <- data.frame(
   x = runif(ncircles, limits[1], limits[2]),
@@ -60,7 +71,7 @@ res <- circleRepelLayout(dat.init, xlim = limits, ylim = limits,
 cat(res$niter, "iterations performed")
 
 
-## ---- fig.width=7, fig.height=4------------------------------------------
+## ---- fig.width=7, fig.height=4-----------------------------------------------
 
 # Get vertex data for the initial layout where sizes are areas
 dat.gg.initial <- circleLayoutVertices(dat.init, sizetype = "area")
@@ -84,7 +95,7 @@ ggplot(data = dat.gg, aes(x, y, group = id)) +
                                       `2` = "Final layout")))
 
 
-## ---- fig.width=7, fig.height=4------------------------------------------
+## ---- fig.width=7, fig.height=4-----------------------------------------------
 
 # choose several arbitrary circles and make them the larger 
 # than the others

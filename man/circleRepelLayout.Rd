@@ -4,9 +4,16 @@
 \alias{circleRepelLayout}
 \title{Arranges circles by iterative pair-wise repulsion within a bounding rectangle}
 \usage{
-circleRepelLayout(x, xlim, ylim, xysizecols = c(1, 2, 3),
-  sizetype = c("area", "radius"), maxiter = 1000, wrap = TRUE,
-  weights = 1)
+circleRepelLayout(
+  x,
+  xlim,
+  ylim,
+  xysizecols = c(1, 2, 3),
+  sizetype = c("area", "radius"),
+  maxiter = 1000,
+  wrap = TRUE,
+  weights = 1
+)
 }
 \arguments{
 \item{x}{Either a vector of circle sizes (areas or radii) or a matrix or 
@@ -59,7 +66,7 @@ maximum number of iterations, the last attempt is returned.
 }
 \details{
 The algorithm is adapted from a demo written in the Processing language by 
-\href{http://www.cricketschirping.com/processing/CirclePacking1/CirclePacking1.pde}{Sean McCullough}.
+Sean McCullough (this no longer seems to be available online).
 Each circle in the input data is compared to those following it. If two 
 circles overlap, they are moved apart such that the distance moved by each is
 proportional to the radius of the other, loosely simulating inertia. So when 

@@ -1,9 +1,9 @@
 Package: packcircles
 Type: Package
-Version: 0.3.3
+Version: 0.3.4
 Title: Circle Packing
-Description: Simple algorithms for circle packing.
-Date: 2018-09-18
+Description: Algorithms to find arrangements of non-overlapping circles.
+Date: 2020-12-10
 Authors@R: c(
   person("Michael", "Bedward", role = c("aut", "cre"), email = "michael.bedward@gmail.com"),
   person("David", "Eppstein", role = "aut", email = "david.eppstein@gmail.com", 
@@ -14,15 +14,16 @@ Authors@R: c(
 URL: https://github.com/mbedward/packcircles
 BugReports: https://github.com/mbedward/packcircles/issues
 Depends: R (>= 3.2)
-Imports: Rcpp (>= 0.12.18)
+Imports: Rcpp (>= 1.0.0)
 Suggests: ggiraph, ggplot2, knitr, rmarkdown, lpSolve
 VignetteBuilder: knitr
-LinkingTo: Rcpp (>= 0.12.10)
+LinkingTo: Rcpp (>= 1.0.0)
 LazyData: true
 License: MIT + file LICENSE
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1
+Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2018-09-18 06:06:17 UTC; mbedward
+Packaged: 2020-12-12 02:13:02 UTC; mbedward
 Author: Michael Bedward [aut, cre],
   David Eppstein [aut] (Author of Python code for graph-based circle
     packing ported to C++ for this package),
@@ -30,4 +31,4 @@ Author: Michael Bedward [aut, cre],
     ported to C++ for this package)
 Maintainer: Michael Bedward <michael.bedward@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-09-18 06:30:03 UTC
+Date/Publication: 2020-12-12 06:20:03 UTC
