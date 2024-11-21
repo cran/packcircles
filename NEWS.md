@@ -1,3 +1,10 @@
+# packcircles 0.3.7 (2024-11-21)
+
+* Fix: Updated progressive packing vignette example to use ggiraph::girafe() 
+  function and fix CRAN warning (thanks to David Gohel).
+  
+* Use the checkmate package to check arguments to functions.
+
 # packcircles 0.3.6 (2023-09-05)
 
 * Fix: Minor change to conform to CRAN package doc conventions.

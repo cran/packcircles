@@ -40,7 +40,7 @@ dat.gg <- circleLayoutVertices(res$layout, sizetype = "radius")
 head(dat.gg)
 
 
-## ---- fig.width=7, fig.height=4-----------------------------------------------
+## ----fig.width=7, fig.height=4------------------------------------------------
 
 library(ggplot2)
 
@@ -71,7 +71,7 @@ res <- circleRepelLayout(dat.init, xlim = limits, ylim = limits,
 cat(res$niter, "iterations performed")
 
 
-## ---- fig.width=7, fig.height=4-----------------------------------------------
+## ----fig.width=7, fig.height=4------------------------------------------------
 
 # Get vertex data for the initial layout where sizes are areas
 dat.gg.initial <- circleLayoutVertices(dat.init, sizetype = "area")
@@ -95,7 +95,7 @@ ggplot(data = dat.gg, aes(x, y, group = id)) +
                                       `2` = "Final layout")))
 
 
-## ---- fig.width=7, fig.height=4-----------------------------------------------
+## ----fig.width=7, fig.height=4------------------------------------------------
 
 # choose several arbitrary circles and make them the larger 
 # than the others
